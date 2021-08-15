@@ -1,7 +1,7 @@
 # enoki-test
 Test de vérification des compétences
 
-Le projet suivant à pour ojectif de faire valoir mes compétence en programmation
+Le projet suivant à pour ojectif de faire valoir mes compétences en programmation
 
 L'application est un faux projet qui sert à référencer les voies d'escalade grimpées par un ensemble de personnes.
 Toutes les fonctionnalités ci-dessous sont présentes :
