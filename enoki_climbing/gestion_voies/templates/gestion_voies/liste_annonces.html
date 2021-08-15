@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% for article in ListeArticles %}
+    <div class="card product mx-2" style="min-width: 300px; width: 18rem;">
+    <a  href="{% url 'article' slug=article.slug %}"><img class="card-img-top" src="{{article.img.media_img.url}}" alt="Card image cap"></a>
+    <div class="card-body">
+        <div class="row title-row">
+            <div class="col-7 fw-bold"><a  href="{% url 'article' slug=article.slug %}">Nom de voie: {{article.art_title}}</a></div>
+            <div class="col fw-bold text-end">Note: {{article.average.comment_rating__avg|floatformat}} /10</div>
+        </div>
+        <p>{{article.art_content|truncatechars:20}} </p>
+    </div>
+    </div>
+    {% endfor %}
+    <div class="container col-10 mt-5 text-end">
+        <a href="{% url 'formulaire' %}" class="btn btn-add btn-light px-5 py-2">AJOUTER UNE VOIE</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %
+
+    {% block content %}
+    <div id="carouselExampleIndicators" class="carousel slide mb-2 col-6" data-bs-ride="carousel" data-interval="false">          
+
+        <ol class="carousel-indicators">
+          {%for img in images %}
+          {% if forloop.first %}
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
+          {% else %}
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}"></li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+        {%for img in images %}
+          {% if forloop.first %}            
+          <div class="carousel-item active">
+            {% else %}
+            <div class="carousel-item">
+            {% endif %}
+            <img src="{{img.media_img.url}}" class="d-block mx-auto img-carousel" alt="...">
+          </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+      </div>
+
+
+    </div>
+
+    <div class="container col-10 mb-5">
+        <div class="row mb-3">
+            <div class="col fw-bold">Nom de voie: {{article.art_title}}</div>
+            <div class="col fw-bold text-end">Note: {{article.average.comment_rating__avg|floatformat}}/10</div>
+        </div>
+
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia molestias corporis nobis natus ipsam velit, illum accusamus doloribus sit. Aperiam explicabo obcaecati illo aut assumenda in facilis perferendis nisi minima.</p>
+
+        <div class="comments">
+            <div class="title fw-bold">Commentaires:</div>
+            <div class="comments_list">
+                {% for comment in Comments %}
+                    <div class="comment-item my-3">
+                        <div class="row">
+                            <div class="col fw-bold">Auteur: {{comment.comment_author}}</div>
+                            <div class="col fw-bold text-end">Note: {{comment.comment_rating}}/10</div>
+                        </div>
+                        <p>{{comment.comment_content}}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="comments_form">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %} 
+
+                    {{ CommentsForm.comment_article }}
+                    <div class="container d-flex flex-column">
+                        <div class="row">
+                            <div class="form-group col-8 d-flex flex-column">
+                                <label for="id_comment_author">Auteur*:</label>
+                                <input type="text" name="comment_author" maxlength="280" required="" id="id_comment_author">
+        
+                            </div>
+                            
+                            <div class="form-group col-4 d-flex flex-column">
+                                <label for="id_comment_rating">Note*:</label>
+                                {{ CommentsForm.comment_rating }}
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <label for="id_comment_content">Commentaire*:</label>
+                            <textarea name="comment_content" cols="40" rows="10" class="col-12" required="" id="id_comment_content"></textarea>
+                        </div>
+
+                        <div class="container mt-3 text-end">
+                            <button type="submit" class="btn btn-add btn-light px-5 py-2">ENVOYER LE COMMENTAIRE</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% if form.errors %}
+    {% for field in form %}
+    {{ field.label }}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+    {% endif %}
+
+    {% endblock %}
